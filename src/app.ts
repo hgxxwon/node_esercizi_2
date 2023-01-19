@@ -3,9 +3,12 @@ import "express-async-errors";
 import prisma from "./lib/prisma/client";
 
 const app = express();
-app.use(express.json());
 
-const hello = "ciao";
-console.log(hello);
+app.get("/fruits", async (request, response) => {
+    const fruits = await prisma.fruits.findMany();
+    response.json(fruits);
+});
 
 export default app;
+
+// controllare server.test.ts

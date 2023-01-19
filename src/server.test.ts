@@ -1,54 +1,31 @@
 import supertest from "supertest";
-// import { prismaMock } from "./lib/prisma/client.mock";
+import { prismaMock } from "./lib/prisma/client.mock";
 import app from "./app";
 
 const request = supertest(app);
 
-test("GET /planets", async () => {
-    const planets = [
+test("GET /fruits", async () => {
+    const fruits = [
         {
             id: 1,
-            name: "Mercury",
-            description: null,
-            diameter: 1234,
-            moons: 12,
-            createdAt: "2023-01-19T01:50:39.651Z",
-            updatedAt: "2023-01-19T01:50:26.711Z",
+            name: "Watermelon",
+            kg: 4,
         },
         {
             id: 2,
-            name: "Venus",
-            description: null,
-            diameter: 5678,
-            moons: 9,
-            createdAt: "2023-01-19T01:51:27.057Z",
-            updatedAt: "2023-01-19T01:51:05.599Z",
+            name: "Apple",
+            kg: 1,
         },
     ];
+    // questi due oggetti si trovano anche nel db di prisma studio, però li ho messi a mano per mostrare la procedura
 
     // @ts-ignore
-    prismaMock.planet.findMany.mockResolvedValue(planets);
+    prismaMock.fruits.findMany.mockResolvedValue(fruits);
 
     const response = await request
-        .get("/planets")
+        .get("/fruits")
         .expect(200)
         .expect("Content-Type", /application\/json/);
 
-    expect(response.body).toEqual(planets);
-});
-
-test("POST /planets", async () => {
-    const planet = {
-        name: "Mercury",
-        diameter: 1234,
-        moons: 12,
-    };
-
-    const response = await request
-        .post("/planets")
-        .send(planet)
-        .expect(201)
-        .expect("Content-Type", /application\/json/);
-
-    expect(response.body).toEqual(planet);
+    expect(response.body).toEqual(fruits);
 });
