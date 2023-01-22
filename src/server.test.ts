@@ -171,3 +171,31 @@ describe("DELETE", () => {
         expect(response.text).toContain("Cannot DELETE /fruits/asdf");
     });
 });
+
+describe("POST /fruits/:id/photo", () => {
+    test("Valid request with PNG file upload", () => {
+        await request
+            .post("/fruits/30/photo")
+            .attach("photo", "test-fixtures/photos/file.png")
+            .expect(201)
+            .expect("Access-Control-Allow-Origin", "http://localhost:8080");
+    });
+
+    test("Invalid fruit id", async () => {
+        const response = await request
+            .post("/fruits/asdf/photo")
+            .expect(404)
+            .expect("Content-Type", /text\/html/);
+
+        expect(response.text).toContain("Cannot POST /fruits/asdf/photo");
+    });
+
+    test("Invalid request with no file uploaded", async () => {
+        const response = await request
+            .post("/fruits/30/photo")
+            .expect(400)
+            .expect("Content-Type", /text\/html/);
+
+        expect(response.text).toContain("No photo file uploaded");
+    });
+});
