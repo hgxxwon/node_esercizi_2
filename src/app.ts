@@ -1,4 +1,4 @@
-import express from "express";
+import express, { response } from "express";
 import "express-async-errors";
 import prisma from "./lib/prisma/client";
 import cors from "cors";
@@ -8,10 +8,14 @@ import {
     fruitsSchema,
     validate,
 } from "./lib/validation";
+import { initMulterMiddleware } from "./lib/middleware/multer";
+import { STATUS_CODES } from "http";
+
+const upload = initMulterMiddleware();
 
 const corsOptions = {
-    origin: "http://localhost:8080"
-}
+    origin: "http://localhost:8080",
+};
 
 const app = express();
 app.use(express.json());
@@ -63,6 +67,22 @@ app.delete("/fruits/id:(\\d+)", async (request, response, next) => {
         next(`cannot DELETE /fruits/${fruitId}`);
     }
 });
+
+app.post(
+    "/fruits/:id(\\d+)/photo",
+    upload.single("photo"),
+    async (request, response, next) => {
+        console.log("request.file", request.file);
+
+        if (!request.file) {
+            response.status(400);
+            return next("No photo file uploaded");
+        }
+        const photoFileName = request.file.filename;
+
+        response.status(201).json({ photoFileName });
+    }
+);
 
 app.use(ValidationErrorMiddleware);
 
