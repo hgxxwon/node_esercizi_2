@@ -1,7 +1,6 @@
 import supertest from "supertest";
-import { prismaMock } from "./lib/prisma/client.mock";
-import app from "./app";
-import test, { describe } from "node:test";
+import { prismaMock } from "../lib/prisma/client.mock";
+import app from "../app";
 
 const request = supertest(app);
 
@@ -173,7 +172,7 @@ describe("DELETE", () => {
 });
 
 describe("POST /fruits/:id/photo", () => {
-    test("Valid request with PNG file upload", () => {
+    test("Valid request with PNG file upload", async () => {
         await request
             .post("/fruits/30/photo")
             .attach("photo", "test-fixtures/photos/file.png")
