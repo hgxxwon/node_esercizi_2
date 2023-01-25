@@ -26,8 +26,8 @@ describe("GET /planets", () => {
             .get("/fruits")
             .expect(200)
             .expect("Content-Type", /application\/json/)
-            .expect("Access-Control-Allow-Origin", "http://localhost:8080");
-
+            .expect("Access-Control-Allow-Origin", "http://localhost:8080")
+            .expect("Access-Control-Allow-Credentials", "true");
         expect(response.body).toEqual(fruits);
     });
 });
@@ -44,7 +44,8 @@ describe("POST /fruits", () => {
             .send(fruit)
             .expect(201)
             .expect("Content-Type", /application\/json/)
-            .expect("Access-Control-Allow-Origin", "http://localhost:8080");
+            .expect("Access-Control-Allow-Origin", "http://localhost:8080")
+            .expect("Access-Control-Allow-Credentials", "true");
 
         expect(response.body).toEqual(fruit);
     });
@@ -88,7 +89,8 @@ describe("PUT /fruits/:id", () => {
             })
             .expect(200)
             .expect("Content-Type", /application\/json/)
-            .expect("Access-Control-Allow-Origin", "http://localhost:8080");
+            .expect("Access-Control-Allow-Origin", "http://localhost:8080")
+            .expect("Access-Control-Allow-Credentials", "true");
 
         expect(response.body).toEqual(fruit);
     });
@@ -145,7 +147,8 @@ describe("DELETE", () => {
         const response = await request
             .delete("/fruits/1")
             .expect(204)
-            .expect("Access-Control-Allow-Origin", "http://localhost:8080");
+            .expect("Access-Control-Allow-Origin", "http://localhost:8080")
+            .expect("Access-Control-Allow-Credentials", "true");
 
         expect(response.text).toEqual("");
     });
@@ -177,7 +180,8 @@ describe("POST /fruits/:id/photo", () => {
             .post("/fruits/30/photo")
             .attach("photo", "test-fixtures/photos/file.png")
             .expect(201)
-            .expect("Access-Control-Allow-Origin", "http://localhost:8080");
+            .expect("Access-Control-Allow-Origin", "http://localhost:8080")
+            .expect("Access-Control-Allow-Credentials", "true");
     });
 
     test("Invalid fruit id", async () => {

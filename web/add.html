@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Fruit</title>
+</head>
+
+<body>
+    <p>
+        <a href="http://localhost:3000/auth/login?redirectTo=http://localhost:8080/add">Login</a>
+    </p>
+    <form action="http://localhost:3000/fruits" id="form-add">
+        <label>
+            <strong>Name:</strong>
+            <input type="text" name="name">
+        </label>
+
+
+        <label>
+            <strong>Kilograms:</strong>
+            <input type="number" name="kilograms">
+        </label>
+
+
+        <input type="submit" value="Add fruit">
+    </form>
+
+    <script>
+        async function addFruit(event) {
+            event.preventDefault();
+
+            const form = event.currentTarget;
+
+            const formData = new FormData(form)
+            const plainFormData = Object.fromEntries(formData.entries());
+            const formDataJsonString = JSON.stringify(plainFormData);
+
+            const url = form.action
+
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: formDataJsonString,
+                credentials: "include",
+            });
+
+            const fruit = await response.json();
+
+            console.dir(fruit);
+        }
+
+        const addForm = document.getElementById("form-add");
+
+        addForm.addEventListener("click", addFruit);
+    </script>
+</body>
+
+</html>
