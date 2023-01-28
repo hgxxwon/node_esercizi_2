@@ -3,4 +3,4 @@ import "./script-2.mjs";
 
 scriptInstance.output();
 
-console.log(scriptInstance.script);
+console.log(scriptInstance.value);

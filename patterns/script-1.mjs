@@ -1,6 +1,6 @@
 export const scriptInstance = {
-    script: 0,
+    value: 0,
     output() {
-        this.script++;
+        console.log(this.value++);
     },
 };
